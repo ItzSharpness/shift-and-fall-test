@@ -16,6 +16,9 @@ const player = {
     grounded: false,
     gravityDirection: 1 // 1 = normal, -1 = inversé
 };
+//Camera qui suis le joueur 
+let offsetX = 0;
+let offsetY = 0;
 
 // Platform
 const platforms = [
@@ -52,6 +55,10 @@ window.addEventListener('keyup', (e) => {
 
 // Game loop
 function gameLoop() {
+    // Centrer la caméra sur le joueur
+offsetX = player.x - canvas.width / 2 + player.width / 2;
+offsetY = player.y - canvas.height / 2 + player.height / 2;
+    
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
     // Horizontal movement
@@ -86,14 +93,14 @@ function gameLoop() {
         player.grounded = false;
     }
 
-    // Draw player
-    ctx.fillStyle = '#0f0';
-    ctx.fillRect(player.x, player.y, player.width, player.height);
+    // Draw player avec caméra
+ctx.fillStyle = '#0f0';
+ctx.fillRect(player.x - offsetX, player.y - offsetY, player.width, player.height);
 
-    // Draw platforms
-    ctx.fillStyle = '#888';
-    platforms.forEach(p => ctx.fillRect(p.x, p.y, p.width, p.height));
-
+// Draw platforms avec caméra
+ctx.fillStyle = '#888';
+platforms.forEach(p => ctx.fillRect(p.x - offsetX, p.y - offsetY, p.width, p.height));
+    
     requestAnimationFrame(gameLoop);
 }
 
